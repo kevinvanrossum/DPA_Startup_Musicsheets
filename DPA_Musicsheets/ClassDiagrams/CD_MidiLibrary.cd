@@ -118,8 +118,8 @@
     </AssociationLine>
     <TypeIdentifier />
     <ShowAsAssociation>
-      <Property Name="MessageType" />
       <Property Name="Command" />
+      <Property Name="MessageType" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Sanford.Multimedia.Midi.OutputDevice">
