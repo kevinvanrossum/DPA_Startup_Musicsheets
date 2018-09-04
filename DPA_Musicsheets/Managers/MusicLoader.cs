@@ -132,16 +132,13 @@ namespace DPA_Musicsheets.Managers
                             switch (metaMessage.MetaType)
                             {
                                 case MetaType.TimeSignature:
-                                    byte[] timeSignatureBytes = metaMessage.GetBytes();
-                                    _beatNote = timeSignatureBytes[0];
-                                    _beatsPerBar = (int)(1 / Math.Pow(timeSignatureBytes[1], -2));
-                                    lilypondContent.AppendLine($"\\time {_beatNote}/{_beatsPerBar}");
+                                    var timeSignature = CalculateTimeSignatureFromBytes(metaMessage.GetBytes());
+                                    lilypondContent.AppendLine($"\\time {timeSignature}");
                                     break;
                                 case MetaType.Tempo:
                                     byte[] tempoBytes = metaMessage.GetBytes();
-                                    int tempo = (tempoBytes[0] & 0xff) << 16 | (tempoBytes[1] & 0xff) << 8 | (tempoBytes[2] & 0xff);
-                                    _bpm = 60000000 / tempo;
-                                    lilypondContent.AppendLine($"\\tempo 4={_bpm}");
+                                    var beatsPerMinute = CalculateBeatsPerMinuteFromBytes(tempoBytes);
+                                    lilypondContent.AppendLine($"\\tempo 4={beatsPerMinute}");
                                     break;
                                 case MetaType.EndOfTrack:
                                     if (previousNoteAbsoluteTicks > 0)
@@ -203,6 +200,20 @@ namespace DPA_Musicsheets.Managers
             lilypondContent.Append("}");
 
             return lilypondContent.ToString();
+        }
+
+        private string CalculateBeatsPerMinuteFromBytes(byte[] tempoBytes)
+        {
+            int tempo = (tempoBytes[0] & 0xff) << 16 | (tempoBytes[1] & 0xff) << 8 | (tempoBytes[2] & 0xff);
+            _bpm = 60000000 / tempo;
+            return $"{_bpm}";
+        }
+
+        private string CalculateTimeSignatureFromBytes(byte[] timeSignatureBytes)
+        {
+            _beatNote = timeSignatureBytes[0];
+            _beatsPerBar = (int) (1 / Math.Pow(timeSignatureBytes[1], -2));
+            return $"{_beatNote}/{_beatsPerBar}";
         }
 
         #endregion Midiloading (loads midi to lilypond)
