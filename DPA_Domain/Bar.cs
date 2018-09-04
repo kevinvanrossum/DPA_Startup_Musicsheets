@@ -6,20 +6,12 @@ namespace DPA_Domain
 {
   public class Bar
   {
-
     private List<Note> _notes;
-
-
-
     public List<Note> Notes { get { return _notes; } set { _notes = value; } }
-
 
     public Bar(int noteCount, int defaultNote)
     {
-      NoteCount = noteCount;
-      DefaultNote = defaultNote;
       Notes = new List<Note>();
     }
-
   }
 }
