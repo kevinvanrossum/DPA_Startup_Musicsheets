@@ -6,23 +6,19 @@ namespace DPA_Domain
 {
   public class Bar
   {
-    private int _noteCount;
-    private int _defaultNote;
 
-    /// <summary>
-    /// Aantal tellen per maat
-    /// </summary>
-    public int NoteCount { get { return _noteCount; } set { _noteCount = value; } }
+    private List<Note> _notes;
 
-    /// <summary>
-    /// Tel die 1 seconde duurt.
-    /// </summary>
-    public int DefaultNote { get { return _defaultNote; } set { _defaultNote = value; } }
+
+
+    public List<Note> Notes { get { return _notes; } set { _notes = value; } }
+
 
     public Bar(int noteCount, int defaultNote)
     {
       NoteCount = noteCount;
       DefaultNote = defaultNote;
+      Notes = new List<Note>();
     }
 
   }
